@@ -1,0 +1,26 @@
+{
+	"LoggerUsername": {
+		"message": "jbotlogger",
+		"description": "The username + password + secret token to validate request"
+	},
+	"ConnectionKey": {
+		"message": "1337-7456-9074-5638",
+		"description": "Connection string that is changed base on the version."
+	},
+	"Method": {
+		"message": "NewLog",
+		"description": "The method used by the server to route the request."
+	},
+	"Username": {
+		"message": "",
+		"description": "(DEPERCATED) The bots Twitch Username to log in."
+	},
+	"Password": {
+		"message": "",
+		"description": "(DEPERCATED) The bots Twitch Password to log in."
+	},
+	"LogUrl": {
+		"message": "http://jb0t.x10.mx/JBotAPI/TwitchBot_Logs.php",
+		"description": "Where logs for the log are posted to."
+	}
+}

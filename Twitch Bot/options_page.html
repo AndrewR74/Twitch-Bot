@@ -1,0 +1,1140 @@
+<html>
+	<head>
+	<title>Twitch JBot By AndrewR74</title>
+	<style>
+	
+		._jbotSection {
+			display: none;
+			width: 95%;
+			padding: 0px;
+			margin: 0 0 0 30px;
+			padding-bottom: 250px;
+		    padding-top: 20px;
+		}
+		
+		._jbotSubSection {
+			display: none;
+			width: 100%;
+		}
+	
+		ul#NavMenu >li {
+			list-style: none;
+			width: 100%;
+			padding: 0;
+			text-align: center;
+			height: 40px;
+			vertical-align: top;
+			margin-top: 3px;
+		}
+
+		ul#NavMenu {
+			width: 100%;
+			margin: 0px;
+			padding: 0px;
+			min-height: 40px;
+			text-align: center;
+			padding-top: 20px;
+		}
+
+		ul#NavMenu >li > a {
+			text-decoration: none;
+			color: #666676;
+			font-weight: bold;
+			vertical-align: top;
+			height: 40px;
+			width: 100%;
+			line-height: 40px;
+			display: inline-block;
+		}
+		
+		ul#NavMenu > li.active {
+			background-color: #101014 !important;
+		}
+		
+		ul#NavMenu > li.active > a {
+			border-left: 4px solid #6441a5;
+			color: #fff;
+		}
+
+		ul.SubNavMenu {
+			margin-top: 10px;
+			width: 100%;
+			list-style-type: none;
+			position: relative;
+			padding: 0;
+		}
+		
+		ul.SubNavMenu:before {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 0;
+			border-top: 1px solid rgba(0,0,0,0.2);
+		}
+		
+		ul.SubNavMenu > li {
+			margin-right: 20px;
+			position: relative;
+			list-style-position: outside;
+			display: inline-block;
+		}
+		
+		ul.SubNavMenu > li > a
+		{
+			color: #6441a5;
+			line-height: 24px;
+			font-size: 14px;
+			height: 24px;
+			display: inline-block;
+			padding-bottom: 7px;
+			border-bottom: 1px solid transparent;
+			cursor: pointer;
+			text-decoration: none;
+		}
+		
+		ul.SubNavMenu > li.active > a
+		{
+			color: #19191f;
+			border-color: #19191f !important;
+		}
+		
+		ul.SubNavMenu > li > a:hover
+		{
+			color: #19191f;
+			border-color: rgba(0,0,0,0.35);
+			text-decoration: none;
+		}
+		
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: sans-serif;
+			background-color: #eee;
+		}
+
+		ul#NavMenu >li:hover {
+			background-color: #101014;
+		}
+
+		ul#NavMenu >li:hover > a {
+			color: white;
+		}
+		
+		.NavBar {
+			height: 100%;
+			width: 200px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: #19191f;
+			z-index: 9999;
+		}
+
+		.mainContent {
+			background-color: #eee;
+			width: 100%;
+			/*height: 100%;*/
+			vertical-align: top;
+			position: relative;
+		}
+		
+		.innerContent {
+		  padding-left: 200px;
+		  min-height: 100%;
+		  /*overflow-y: scroll;*/
+		  position: relative;
+		}
+		
+		header {
+			height: 0px;
+		}
+		
+		button, input[type="submit"] {
+		  display: inline-block;
+		  position: relative;
+		  cursor: pointer;
+		  line-height: 30px;
+		  height: 30px;
+		  font-size: 12px;
+		  font-family: inherit;
+		  background: #6441a5;
+		  color: #fff;
+		  padding: 0 10px;
+		  border: 0;
+		}
+		
+		input[type="text"], input[type="password"] {
+		  margin: 0;
+		  line-height: 28px;
+		  padding: 0 7px;
+		  height: 30px;
+		  font: inherit;
+		  letter-spacing: inherit;
+		  color: #666;
+		  vertical-align: top;
+		  border: 1px solid rgba(0,0,0,0.25);
+		  background-clip: padding-box;
+		  -webkit-background-clip: padding-box;
+		  -moz-background-clip: padding;
+		  box-sizing: border-box;
+		  background: #fff;
+		  width: 100%;
+		}
+		
+		div.standardInput > p {
+			
+			margin: 0;
+		}
+		
+		.inputLabel {
+			font-weight: bold;
+		}
+		
+		.inputwarningLabel {
+			color: red;
+			font-size: 11px !important;
+		}
+		
+		.inputsubLabel {
+			color: #8c8c8c;
+			font-size: 11px !important;
+		}
+		
+		input[type="text"]:focus, input[type="password"]:focus, select:focus, button:focus, textarea:focus {
+		  outline: 0;
+		  box-shadow: 0 0 3px 1px rgba(185,155,235,0.75);
+		  border: 1px solid rgba(100,65,165,0.75);
+		}
+		
+		div.standardInput input[type="text"], div.standardInput input[type="password"], div.standardInput select {
+			width: 460px;
+		}
+		
+		div.jinputCluster {
+			margin-bottom: 20px;
+		}
+		
+		.sectionTitle {
+			font-size: 30px;
+			margin: 0;
+			padding: 0;
+			margin-bottom: 20px;
+		}
+		
+		select {
+		  height: 30px;
+		  font-size: 15px;
+		}
+		
+		div.standardCodeInput textarea {
+			width: 100%;
+			resize: vertical;
+			height: 50%;
+		}
+		
+		.commandGuts {
+			margin-left: 20px;
+		}
+
+		.commands > div {
+			background-color: #19191f;
+			padding: 10px;
+			margin: 5px;
+			color: white;
+		}
+
+		.commandGuts > div {
+			font-size: 14px;
+			background-color: #666676;
+			padding: 2px;
+		}
+
+		div.command {
+			margin-bottom: 15px;
+		}
+		
+		div.command > span {
+			font-size: 20px;
+			font-weight: bold;
+			color: #6441a5;
+		}
+
+		.commands {
+			font-size: 15px;
+		}
+
+		.commandSection > h3 {
+			font-size: 25px;
+			color: white;
+			margin: 0;
+		}
+
+		.commandSection {
+			background-color: #100B0B;
+			padding: 10px;
+			margin: 10px 0px;
+		}
+		
+		.introHeader h2 {
+			font-size: 60px;
+			margin: 0;
+			font-weight: normal;
+			padding: 0;
+			color: white;
+			  margin-bottom: 20px;
+		}
+
+		.introHeader {
+			width: 100%;
+			background-color: #303030;
+			padding-top: 30px;    
+			padding-bottom: 30px;    font-size: 24px;    
+			color: white;
+			text-align: left;
+			font-weight: normal;
+			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		}
+		
+		.introHeader > div {
+		  width: 800px;
+		  padding-left: 200px;
+		}
+		
+		.introHeader p {
+		padding: 0;
+		margin: 0;
+		}
+		
+		.alert-info {
+		  background-color: #5bc0de;
+		  border-color: #5bc0de;
+		  color: #ffffff;
+		}
+
+		.alert {
+		  padding: 15px;
+		  margin-bottom: 10px;
+		  border: 1px solid transparent;
+		  border-radius: 4px;
+		  
+		    font-family: Georgia, "Times New Roman", Times, serif;
+		  font-size: 16px;
+		  line-height: 1.42857143;
+		  max-width: 500px;
+		}
+		
+		.alert p {
+			margin:0;
+			padding:0;
+		}
+		
+		.alert-danger {
+		  background-color: #d9534f;
+		  border-color: #d9534f;
+		  color: #ffffff;
+		}
+		
+		.alert-success {
+		  background-color: #3fad46;
+		  border-color: #3fad46;
+		  color: #ffffff;
+		}
+		
+		.step, .well {
+		  min-height: 20px;
+		  padding: 19px;
+		  margin-bottom: 20px;
+		  background-color: #f7f7f7;
+		  border: 1px solid #e5e5e5;
+		  border-radius: 4px;
+		  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+		  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+		}
+		
+		.stepNotes {
+			margin-left: 25px;
+		}
+		
+		.introContent {
+		  width: 700px;
+		  margin-top: 25px;
+		}
+		
+		.step > p {
+		 margin-top: 15px;
+		 font-size: 25px;
+		}
+		
+		.step > p.description {
+		 
+		}
+		
+		.step > span.number {
+			font-weight: bold;
+			font-size: 30px;
+		}
+	</style>
+	
+	<style>
+
+		
+		footer {
+			padding-top: 10px;
+			padding-bottom: 20px;
+			background-color: #19191f;
+			position: absolute;
+			bottom: 0;
+			left: 200px;
+			height: 200px;
+			right: 0;
+		}
+		
+		.footerContent {
+			width: 700px;
+			margin: auto;
+			height: 200px;
+		}
+		
+		span.opensource {
+		  width: 75px;
+		  height: 75px;
+		  display: block;
+		  background: url('images/Sprite.png') no-repeat -200px -115px;
+		  background-size: 400px;
+		}
+		
+		span.logo {
+		  width: 150px;
+		  height: 75px;
+		  display: block;
+		  background: url('images/Sprite.png') no-repeat 0px -115px;
+		  background-size: 400px;
+		  margin: auto;
+		}
+		
+		span.poweredBy {
+			  width: 200px;
+			  height: 57px;
+			  display: block;
+			  background: url('images/Sprite.png') no-repeat 0 0;
+			  background-size: 200px;
+		}
+	
+		
+		.sponsors > span {
+			text-align: center;
+			margin: auto;
+			margin-top: 10px;
+			display: inline-block;
+		}
+
+		.sponsors {
+			width: 300px;
+			text-align: center;
+		}
+
+		.footerContent > div {
+			display: inline-block;
+			vertical-align: top;
+			position: relative;
+			height: 100%;
+		}
+		
+		.mapping {
+			color: #666676;
+		}
+
+		.map {
+			display: inline-block;
+			vertical-align: top;
+			float: left;
+			position: relative;
+			height: 100%;
+		}
+
+		.map > ul {
+			list-style: none;
+			margin: 0;
+			padding: 0 20px 0 20px;
+		}
+
+		.map > h3 {
+			text-align: center;
+			
+			text-transform: uppercase;
+		}
+
+		.sponsors:after {
+			position: absolute;    content: ' ';    background-color: #ddd;    width: 1px;    height: 100%;    right: 0;    top: 0;
+		}
+
+		.map > ul > li {
+			padding: 5px;
+		}
+		
+	</style>
+	
+	<script src="TcdQuery.min.js"></script>
+	
+	<script src="options.js"></script>
+	
+	</head>
+	<body>
+		<div class="mainContent">
+			<div class="NavBar">
+				<span id="logo" class="logo"></span>
+				<ul id="NavMenu">
+					<li><a data-key="BotHomePage" href="#">Home</a></li>
+					<li><a data-key="BotSettings" href="#">Configuration</a></li>
+					<li><a data-key="InternalDatabase" href="#">Database</a></li>
+					<li><a data-key="ModuleManagement" href="#">Modules</a></li>
+					<li><a data-key="Documentation" href="#">Commands</a></li>
+					<li><a data-key="ModuleDevelopment" href="#">Module Development</a></li>
+					<li><a data-key="DeveloperTab" href="#">Developers</a></li>
+				</ul>
+			</div>
+			<div class="innerContent">
+				<div class="messagebox" id="messagebox"></div>
+				
+				<section id="BotHomePage" class="_jbotSection">
+						<div class="intro">
+							<div class="introHeader">
+								<div>
+									<h2>Getting Started</h2>
+									<p>An overview of JBot, how to download and use, basic commands and examples, and more.</p>
+								</div>
+							</div>
+							<div class="introContent">
+								<div class=" alert alert-danger">
+									<p>Please note the bot will not work with the Extension BetterTTV. In the future the bot will be compatible.</p>
+								</div>	
+								<div class="step">
+									<span class="number">.1</span><p class="description">Open your Twitch Channel. (Note: Not your profile page)</p>
+									<div class="stepNotes">
+										<div class=" alert alert-success">
+											<p>Correct URL</p><p>http://www.twitch.tv/jeopardybot</p>
+										</div>
+										<p class="inputwarningLabel">Be sure to substitute JeopardyBot with your Twitch username.</p>
+										<div class=" alert alert-danger">
+											<p>Incorrect URL</p><p>http://www.twitch.tv/jeopardybot/profile</p>
+										</div>										
+									</div>
+								</div>
+								<div class="step">
+									<span class="number">.2</span><p class="description">Log into your Twitch Account if you are not already. (Note: The logged in user must be the owner of the channel)</p>
+									<div class="stepNotes alert alert-info">
+										<p>The bot will not run in another streamers channel without their permission.</p>
+										<p>Refer to the FAQ section to run the bot in another streamers channel.</p>
+									</div>
+									<p class="inputsubLabel">The FAQ section has not been create yet. Kappa</p>
+								</div>
+								<div class="step">
+									<span class="number">.3</span><p class="description">Send the chat message "!join" without quotes. The bot will indicate that it has joined your chat.</p>
+									<div class="stepNotes alert alert-info">
+										<p>If the bot does not respond to the !join command. Refresh the page. The Extension might not have been initialized in the tab when it was installed.</p>
+									</div>
+									<div class="stepNotes alert alert-info">
+										<p>The !join command has an optional username parameter. This parameter can be used to allow another user running the bot to run their instance of the bot in your chat.</p>
+										<p>Example: !join @AndrewR74</p>
+										<p>The bot ran by AndrewR74 will then join your channel.</p>
+									</div>
+									<p class="inputwarningLabel">Note: The person trying to run the bot in your channel must be viewing your channel.</p>
+								</div>
+								<div class="step">
+									<span class="number">.4</span><p class="description">Test the bot functionality by entering the command "!riddle" to generate a random riddle.</p>
+									<div class="stepNotes alert alert-danger">
+										<p>It is very important to keep the tab, running the bot, open at all times. Closing the tab will make the bot leave your chat.</p>
+									</div>
+									<div class="stepNotes alert alert-info">
+										<p>To make the bot leave your chat without closing the tab use the command "!jleave"</p>
+									</div>
+								</div>
+							</div>
+						</div>				
+				</section>
+				
+				<section id="BotSettings" class="_jbotSection">
+					<h2 class="sectionTitle">Bot Settings</h2>
+					<div>
+						<div class="standardInput jinputCluster">
+							<p class="inputLabel"><label for="TXT_AdminUsername">Administrator UserName</label></p>
+							<input id="TXT_AdminUsername" type="text" />
+						</div>
+						<div class="standardInput jinputCluster">
+							<p class="inputLabel"><label for="TXT_TwitchUsername">Twitch UserName</label></p>
+							<input id="TXT_TwitchUsername" type="text" />
+							<p class="inputwarningLabel">Leave blank if you don't plan to run the bot for a long period of time unattended.</p>
+							<p class="inputsubLabel">Auto Login into your Twitch account when logged out.</p>
+						</div>
+						<div class="standardInput jinputCluster">
+							<p class="inputLabel"><label for="TXT_TwitchPassword">Twitch Password</label></p>
+							<input id="TXT_TwitchPassword" type="password" />
+						</div>
+						<div class="standardCodeInput jinputCluster">
+							<p class="inputLabel"><label for="CHK_Developermode">Enable Developer Module</label></p>
+							<input type="checkbox" id="CHK_Developermode" />
+						</div>
+						<div>
+							<input id="BTN_SaveBotProperites" type="submit" value="Save" />
+						</div>
+					</div>
+				</section>
+				
+				<section id="InternalDatabase" class="_jbotSection">
+				
+					<h2 class="sectionTitle">Bot Database</h2>
+				
+					<div>
+						<ul class="SubNavMenu" id="DatabaseTabs">
+							<li><a data-key="DatabaseModifications" href="#">Database</a></li>
+							<li><a data-key="DatabaseKeys" href="#">Keys</a></li>
+						</ul>
+					</div>
+				
+					<section id="DatabaseModifications" class="_jbotSection">
+						<h3>Database Modifications</h3>
+						<div class="standardCodeInput jinputCluster">
+							<p class="inputLabel"><label for="TXT_BotInternalData">Modify internal database. Proceed with extreme caution.</label></p>
+							<textarea id="TXT_BotInternalData"></textarea>
+						</div>
+						<div>
+							<button id="BTN_SaveBotInternalMemory">Save</button>
+						</div>
+					</section>
+				
+					<section id="DatabaseKeys" class="_jbotSection">
+						<h3>Database Keys</h3>
+						<div class="standardInput jinputCluster">
+							<p class="inputLabel"><label for="DDL_InternalMemory_Keys">Delete key entries from internal database.</label></p>
+							<select id="DDL_InternalMemory_Keys"></select>
+							<button id="BTN_DeleteInternalMemoryKey">Delete Key</button>
+						</div>
+						<div>
+							<button id="BTN_SaveBotInternalMemoryKeys">Save</button>
+						</div>
+					</section>
+					
+				</section>
+				
+				<section id="ModuleManagement" class="_jbotSection">
+					<h2 class="sectionTitle">Module Management</h2>
+					
+					<div class="standardInput jinputCluster">
+						<p class="inputLabel"><label for="DDL_BotModules">Loaded Modules</label></p>
+						<select id="DDL_BotModules"></select>
+						<button id="BTN_DeleteBotModules">Delete Module</button>
+					</div>
+					
+					<div class="standardInput jinputCluster">
+						<p class="inputLabel"><label for="TXT_BotModules">Blacklisted Channel Names</label></p>
+						<p class="inputsubLabel">Enter channel names that this module can not run in. Otherwise the module will run in all channels.</p>
+						<button id="BTN_BotModuleblackListedSave">Set BlackList</button>
+						<div>
+							<textarea id="TXT_BotModuleBlackListedChannels"></textarea>
+						</div>
+					</div>
+					
+					<div class="standardInput jinputCluster">
+						<p class="inputLabel"><label for="TXT_BotModules">Enter Module ID</label></p>
+						<input type="text" id="TXT_BotModules" />
+						<button id="BTN_AddBotModule">Add Module</button>
+					</div>
+					<div>
+						<button id="BTN_SaveBotModules">Save</button>
+					</div>
+				</section>
+				
+				<section id="ModuleDevelopment" class="_jbotSection">
+					<h2 class="sectionTitle">Module Development</h2>
+					
+					<div class="standardCodeInput jinputCluster">
+						<p class="inputLabel"><label for="TXT_DeveloperModule">Enter Module code to begin testing.</label></p>
+						<textarea id="TXT_DeveloperModule"></textarea>
+					</div>
+					<div class="standardCodeInput jinputCluster">
+						<p class="inputLabel"><label for="TXT_DeveloperModuleResource">Enter data your module will use. Ex. List of riddles. (Recommended to use JSON format)</label></p>
+						<textarea id="TXT_DeveloperModuleResouce"></textarea>
+					</div>
+					<div>
+						<button id="BTN_SaveDeveloperModule">Save</button>
+						<button id="BTN_ResetDeveloperModule">Reset</button>
+					</div>
+				</section>
+				
+				<section id="DeveloperTab" class="_jbotSection">
+				
+					<section id="DeveloperAccount" class="_jbotSection">
+						<h2 class="sectionTitle">Developer Account</h2>
+						
+						<div>
+							<ul class="SubNavMenu" id="DeveloperAccountTabs">
+								<li><a data-key="ExistingDeveloperAccount" href="#">Existing Developer</a></li>
+								<li><a data-key="CreateDeveloperAccount" href="#">New Developer</a></li>
+							</ul>
+						</div>
+
+						<section id="ExistingDeveloperAccount" class="_jbotSubSection">
+							<h3>Existing Developer</h3>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_DevUsername">UserName</label></p>
+								<input id="TXT_DevUsername" type="text" />
+							</div>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_DevPassword">Password</label></p>
+								<input id="TXT_DevPassword" type="password" />
+							</div>
+							<div>
+								<button id="BTN_LogInDeveloper">Log In</button>
+							</div>
+						</section>
+						
+						<section id="CreateDeveloperAccount" class="_jbotSubSection">
+							<h3>New Developer</h3>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_NDevUsername">UserName</label></p>
+								<input id="TXT_NDevUsername" type="text" />
+							</div>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_NDevEmail">Email Address</label></p>
+								<input id="TXT_NDevEmail" type="text" />
+							</div>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_NDevPassword">Password</label></p>
+								<input id="TXT_NDevPassword" type="text" />
+							</div>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_NDevCPassword">Confirm Password</label></p>
+								<input id="TXT_NDevCPassword" type="text" />
+							</div>
+							<div class="standardInput jinputCluster">
+								<img id="IMG_NDevCaptcha" width="200px" height="80px" data-id="-1" />
+							</div>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_NDevCaptcha">Captcha</label></p>
+								<input id="TXT_NDevCaptcha" type="text" />
+							</div>
+							<div>
+								<button id="BTN_CreateDeveloper">Create</button>
+							</div>
+						</section>
+						
+					</section>
+					
+					<section id="DeveloperPortal" class="_jbotSection">
+						<h2 class="sectionTitle">Developer Portal</h2>
+						
+						<div>
+							<a href="#/Logout">Log Out</a>
+						</div>
+						
+						<div>
+							<ul class="SubNavMenu" id="DeveloperPortalTabs">
+								<li><a data-key="DeveloperModules" href="#">My Modules</a></li>
+								<li><a data-key="DeveloperUpdates" href="#">Pending Modules</a></li>
+								<li><a data-key="DeveloperPublish" href="#">Publish</a></li>
+							</ul>
+						</div>
+						
+						<section id="DeveloperModules" class="_jbotSubSection">
+							<h3>My Modules</h3>
+							<div ID="ModuleList"></div>
+						</section>
+						
+						<section id="DeveloperUpdates" class="_jbotSubSection">
+							<h3>Pending Module Updates/Publishes</h3>
+								
+						</section>
+						
+						<section id="DeveloperPublish" class="_jbotSubSection">
+							<h3>Publish Module</h3>
+							<div class="standardInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_PublishModuleName">Module Name</label></p>
+								<input id="TXT_PublishModuleName" type="text" />
+							</div>
+							<div class="standardCodeInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_PublishModuleScript">Enter Module code to submit for publish</label></p>
+								<textarea id="TXT_PublishModuleScript"></textarea>
+							</div>
+							<div class="standardCodeInput jinputCluster">
+								<p class="inputLabel"><label for="TXT_PublishModuleResouce">Enter module resource</label></p>
+								<textarea id="TXT_PublishModuleResouce"></textarea>
+							</div>
+							<div>
+								<button id="BTN_PublishModule">Publish</button>
+							</div>
+						</section>
+					</section>
+				
+				</section>
+								
+				<section id="Documentation" class="_jbotSection">
+					<h2 class="sectionTitle">Command Documentation</h2>
+					
+					<div class="commandSection">
+						<h3>General Commands</h3>
+						<div class="commands">
+							<div>
+								<div class="command"><span class="command">!jbot</span>: Get the current version of the bot.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Cool Down: 2 mins</li>
+										<li>Access Level: All</li>
+									</ul>
+									<ul class="commandParameters">
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example: !jbot</li>
+									</ul>
+								</div>
+							</div>
+							<div>
+								<div class="command"><span class="command">!JScore x</span>: Get your game score or a another players score.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Player Cool Down: 2 minute</li>
+										<li>Access Level: All</li>
+									</ul>
+									<div>Parameter Set 1</div>
+									<ul class="commandParameters">
+										<li><span>(x) Optional: Player name.</span></li>
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example (Get your lifetime score.): !jscore</li>
+										<li>Example (Get another players score): !jscore @AndrewR74</li>
+									</ul>
+								</div>
+							</div>
+							<div>
+								<div class="command"><span class="command">!Jleader x y</span>: Gets the top x players with the most points.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Global Cool Down: 2 minutes</li>
+										<li>Access Level: All</li>
+									</ul>
+									<div>Parameter Set</div>
+									<ul class="commandParameters">
+										<li><span>(x) Optional: Number of top players to display.</span></li>
+										<li><span>(y) Optional: Daily or lifetime scores of the top x players.</span></li>
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example (Get the player with the highest lifetime score): !Jleader</li>
+										<li>Example (Get top 5 lifetime player scores): !Jleader 5</li>
+										<li>Example (Get top 5 daily player scores): !Jleader 5 daily</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="commandSection">
+						<h3>Game Commands</h3>
+						<div class="commands">
+							<div>
+								<div class="command"><span class="command">!Riddle</span>: Get a random riddle for the chat to answer.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Cool Down: dynamic</li>
+										<li>Access Level: All</li>
+									</ul>
+									<ul class="commandParameters">
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example: !riddle</li>
+									</ul>
+								</div>
+							</div>
+							<div>
+								<div class="command"><span class="command">!Jeopardy</span>: Get a random jeopardy question and category for the chat to answer.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Cool Down: dynamic</li>
+										<li>Access Level: All</li>
+									</ul>
+									<ul class="commandParameters">
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example: !Jeopardy</li>
+									</ul>
+								</div>
+							</div>
+							<div>
+								<div class="command"><span class="command">!trivia</span>: Get a random useless trivia question for the chat to answer.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Cool Down: dynamic</li>
+										<li>Access Level: All</li>
+									</ul>
+									<ul class="commandParameters">
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example: !trivia</li>
+									</ul>
+								</div>
+							</div>
+							<div>
+								<div class="command"><span class="command">!hint</span>: Get a hint for the current game that is progress.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Cool Down: none</li>
+										<li>Access Level: All</li>
+									</ul>
+									<ul class="commandParameters">
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example: !hint</li>
+									</ul>
+								</div>
+							</div>
+							<div>
+								<div class="command"><span>!skip</span>: Skip the current game question that is progress.</div>
+								<div class="commandGuts">
+									<div>Properties</div>
+									<ul class="commandProperties">
+										<li>Cool Down: none</li>
+										<li>Access Level: Broadcaster, Moderator, Administrator</li>
+									</ul>
+									<ul class="commandParameters">
+									</ul>
+									<div>Examples</div>
+									<ul class="commandExamples">
+										<li>Example: !skip</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<table>
+						<tr>
+							<td>!Javg</td>
+							<td>Average chat messages over an interval</td>
+							<td>1 minute</td>
+							<td>All</td>
+							<td>Optional: Number: A positive integer to use as a sample</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>!Jenable</td>
+							<td>Enables a certain setting of the bot</td>
+							<td>No Cool Down</td>
+							<td>Broadcaster, Administrator</td>
+							<td>Mandatory: String: [ lurkbot, games, chat ]</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>!Jdisable</td>
+							<td>Disables a certain setting of the bot.</td>
+							<td>No Cool Down</td>
+							<td>Broadcaster, Administrator</td>
+							<td>Mandatory: String: [ lurkbot, games, chat ]</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>!Jtracker</td>
+							<td>Display tracker statistics.</td>
+							<td>2 minutes</td>
+							<td>All</td>
+							<td>Optional[0]: String: [reset, add, delete]</td>
+							<td>Mandatory[0]: String: Word</td>
+							<td></td>
+							<td></td>
+							<td>
+								<div>(All): !jtracker</div>
+								<div>(Broadcaster, Administrator): !jtracker reset</div>
+								<div>(Broadcaster, Administrator): !tracker add Hello</div>
+							</td>
+						</tr>
+						<tr>
+							<td>!Jset</td>
+							<td>Change a bot setting value.</td>
+							<td>No Cool Down</td>
+							<td>Broadcaster, Administrator</td>
+							<td>Mandatory: String: [timeout, gtimespan]</td>
+							<td>Mandatory: String||Number: Value</td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+					<pre>
+					
+
+					&lt;h3&gt;Roulette Commands&lt;/h3&gt;
+					
+					Jroulette - Start a game of roulette.
+					Anyone who wants to play has 30 seconds to place bets.
+
+					Access Level: All
+					bet &lt;BetName&gt; &lt;[Values]&gt; &lt;Amount&gt; - Place a bet
+
+					Access Level: All
+					Mandatory Parameter 1: [ even, odd, red, black, high, low, number, row, rsplit, column, dozen ]
+					Optional Parameter 2: integer value. (Only for a Number bet)
+					Mandatory Parameter 3: Amount being bet. (Positive integer value)
+					Bet Examples
+					!bet [Even, Odd, Red, Black, High, Low] &lt;BetAmount&gt;
+					!bet number [-1 - 36] &lt;BetAmount&gt;
+					-1 = 00
+					!bet row [1 - 12] &lt;BetAmount&gt;
+					!bet rsplit [1 - 12] [1 - 12] &lt;BetAmount&gt;
+					Parameter 1: Row Choice 1
+					Parameter 2: Row Choice 2
+					Note: Row Choice 2 must be a row next to Row Choice 1
+					!bet column [1 - 3] &lt;BetAmount&gt;
+					!bet dozen [1 - 3] &lt;BetAmount&gt;
+					Note: The 1st dozen, 2nd dozen, 3rd dozen.
+					JMoney &lt;PlayerName&gt; - Get a players money
+
+					Access Level: All
+					Optional Parameter 1: Players name. Default value is callers name.
+					JSpin - Spin the wheel ending the timer.
+
+					Access Level: Broadcaster, Dev, Moderator
+					JMoney &lt;Action&gt; &lt;Player&gt; &lt;Amount&gt; - Modify players money.
+
+					Access Level: Broadcaster, Dev
+					Parameter 1: [Give, Take, Reset]
+					Parameter 2: The players name that the action will be applied to.
+					Parameter 3: The amount to taken or given to the player. Exclude parameter for Reset action.
+					JSet StartAmount &lt;Amount&gt; - How much money a first time player is given to start playing.
+
+					JSet BetTimeSpan &lt;Seconds&gt; - How long before the bot waits before automatically spinning.
+
+					JSet rTimeSpan &lt;Seconds&gt; - How long players must wait after a game ends before another one can start.
+
+					JSet BustAmount &lt;Amount&gt; - How much money a player that went bankrupt would receive to play again.
+
+					JSet BustModMultiplier &lt;Multiplier&gt; - How much the Bust Amount would be multiplied by when a channel moderator went bankrupt.
+
+					JSet BustSubMultiplier &lt;Multiplier&gt; - How much the Bust Amount would be multiplied by when a channel subscriber went bankrupt.
+
+					JSet ModTimeout &lt;Seconds&gt; - How long a channel moderator has to wait before they can play again after going bankrupt.
+
+					JSet SubTimeout &lt;Seconds&gt; - How long a channel subscriber has to wait before they can play again after going bankrupt.
+
+					JSet PlebTimeOut &lt;Seconds&gt; - How long a channel pleb has to wait before they can play again after going bankrupt.
+					&lt;/pre&gt;
+					
+					&lt;h3&gt;JTeam Commands&lt;/h3&gt;
+					&lt;h4&gt;How To Run &lt;/h4&gt;
+					&lt;pre&gt;	
+					All commands must be follow the !JTeam keyword.
+
+					Note: Team names with spaces must be surrounded with quotation marks. This rule applies to all JTeam commands.
+
+					Example: !JTeam Create &quot;Bobs Team&quot;
+
+					General Commands
+					!JTeam &lt;PlayerName&gt;
+
+					Get the current team of a player. The player name is optional and is defaulted to the callers username.
+					/all
+
+					List all of the teams on the channel.
+					Team Modifiers
+					Create &lt;TeamName&gt;
+
+					Create a new team.
+					Delete &lt;TeamName&gt;
+
+					Delete an existing team.
+					Members &lt;TeamName&gt;
+
+					List all the members of a team.
+					&lt;TeamName&gt; Get SubMode
+
+					Get the Sub Mode Only value of a team.
+					&lt;TeamName OR /all&gt; Exec &lt;Command Names&gt;
+
+					Execute a team command for a particular team or all channel teams.
+					&lt;TeamName&gt; Set SubMode &lt;Boolean&gt;
+
+					Change the Sub Mode Only value of a team.
+					&lt;TeamName&gt; Set Name &lt;NewTeamName&gt;
+
+					Change the name of a team.
+					Team Members
+					&lt;TeamName&gt; Member import
+
+					Import members into a team. Developer Only.
+					&lt;TeamName&gt; Member Create @&lt;PlayerName&gt;
+
+					Add a new member to the team. Note: A non subscriber member will be removed from the team if the team is in Sub Mode Only.
+					&lt;TeamName&gt; Member Delete @&lt;PlayerName&gt;
+
+					Delete an member from a team.
+					&lt;TeamName&gt; Member Mod @&lt;PlayerName&gt;
+
+					Not used.
+					&lt;TeamName&gt; Member UnMod @&lt;PlayerName&gt;
+
+					Not used.
+					&lt;TeamName&gt; Member AddLeader @&lt;PlayerName&gt;
+
+					Not used.
+					&lt;TeamName&gt; Member RmvLeader @&lt;PlayerName&gt;
+
+					Not used.
+					Team Commands
+					&lt;TeamName OR /all&gt; Command Create &lt;Name&gt; &quot;&lt;Command&gt;&quot;
+
+					Creates a command that can be executed for all team members. The &lt;Name&gt; parameter is used for the execute command. Note: The name can not contain semicolons.
+
+					If the command contains the members name in the command; the &lt;name&gt; tag can be substituted. The members name will automatically be inserted into the command during execution.
+					&lt;TeamName OR /all&gt; Command Delete &lt;Name&gt;
+
+					Delete an exising command by it's name.
+					</pre>
+				</section>
+			
+				<footer>
+					<div class="footerContent">
+						<div class="sponsors">
+							<span class="logo"></span>
+							<span class="poweredBy"></span>
+							<span class="opensource" style="display:none"></span> <!-- Once the initial development has been completed we will release as open source -->
+						</div>
+						<div class="mapping">
+							<div class="map">
+								<h3>Legal</h3>
+								<ul>
+									<li>Terms Of Service</li>
+								</ul>
+							</div>
+							<div class="map">
+								<h3>Development</h3>
+								<ul>
+									<li>Module Development</li>
+									<li>Module Documentation</li>
+									<li>GitHub Project</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>

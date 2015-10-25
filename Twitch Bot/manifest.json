@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+
+  "name": "Twitch Bot",
+  "description": "Adds a bot to a your Twitch.tv channel.",
+  "version": "2.68",
+  "default_locale": "en",
+  "permissions": [
+    "http://www.twitch.tv/*", "http://jb0t.x10.mx/*",
+	"storage", "background"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*.twitch.tv/*"],
+      "css": ["TcdCSS.css"],
+      "js": ["TcdQuery.min.js", "Bot.js", "Vector2D.js"]
+    },
+	{
+		"matches": ["http://jb0t.x10.mx/JBotAPI/YTP.html*"],
+		"js":["TcdQuery.min.js", "YouTubeService.js"]
+	}
+  ],
+  "background": {
+    "scripts": ["TcdQuery.min.js", "background.js"]
+  },
+  "options_page": "options_page.html",
+  "web_accessible_resources": [ "db.json", "Riddles.json", "Trivias.json", "CIJ.js", "ModuleHeader.js", "ExampleModule.js" ], 
+	"icons": {
+		"128": "icon128.png"
+	},
+	
+	"browser_action": {
+          "default_title": "JBot Options"
+        }
+}

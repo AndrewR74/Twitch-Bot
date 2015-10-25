@@ -1,0 +1,42 @@
+https://jsfiddle.net/sh0Lbghf/
+
+
+<textarea id="i123"></textarea>
+<textarea id="o123"></textarea>
+
+$(function() {
+    var _lines = [];
+    var _headers = [];
+    var _objs = [];
+    
+    $("#i123").on("change", function() {
+        _lines = $(this).val().split("\n");
+        
+        _objs = [];
+        
+        if(_lines.length > 0) { //	
+            _headers = _lines[0].split("\t");
+            
+            _lines.shift();
+            
+            for(var _l in _lines)
+            {
+                var _cells = _lines[_l].split("\t"); 
+                
+                if(_cells.length >= _headers.length)
+                {
+                    var _jobj = {};
+                    
+                    for(var _i = 0; _i < _headers.length; _i++)
+                    {
+                        _jobj[_headers[_i]] = _cells[_i];
+                    }
+                    
+                    _objs.push(_jobj);
+                }
+            }
+            
+            $("#o123").val(JSON.stringify(_objs));            
+        }
+    });
+});

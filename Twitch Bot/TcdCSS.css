@@ -1,0 +1,248 @@
+.chat-line
+{
+	
+}$(function() {  
+  /**
+  * Thresh hold values
+  */
+  var banTime = 5; //How many minutes to ban message for
+  var minHits = 3; //Number hits before banning message
+  var maxMessage = 1000; //Only keep track of 1000 messages
+  var checkInterval = 1250; // 500 milliseconds
+  var cleanInterval = (1000 * 60 * 2); //If theres not alot messages then force a clean
+  
+  /**
+  * Global Variables
+  */
+  var Messages = [];
+  var EmberIDs = [];
+  var LastClean = (new Date()).getTime();
+  var spamChecker = setInterval(function(){DeSpam();}, checkInterval);
+  //This needs to be moved to a chrome browser action. That way it can be toggled.
+  //var submodOnly = setInterval(function(){SubModeOnly();}, checkInterval);
+  
+  /**
+  * Counters
+  */
+  var blockedMessages = 0;
+  
+  /**
+  * Class message capture
+  */
+  function MessageCapture(msg)
+  {	
+  		this.msg = msg;
+  		this.hits = 1;
+  		this.timestamp = (new Date()).getTime();
+  		
+  		this.increment = function() { 
+  			this.hits++;
+  			this.timestamp = (new Date());
+  		};
+  		
+  		this.getHits = function() {
+  			return this.hits;
+  		};
+  		
+  		this.isBan = function() {
+  			if(this.hits >= minHits)
+  				return true;
+  			return false;
+  		};
+  		
+  		this.isExpired = function() {
+  			//If the MC is banned check if the ban has expired
+  			if( this.isBan() ) {
+  				if( ((new Date()).getTime() - this.timestamp) > (1000 * 60 * banTime) )
+  					return true;
+  			}
+  			return false;
+  		};
+  		
+  		this.isNotSpam = function() {
+  			//If this is not banned and it has been at least a min timespan. The MC
+  			//can be deleted because it is not spam/
+  			if( !this.isBan() )
+  				if( ((new Date()).getTime() - this.timestamp) > (1000 * 60 * 1) )
+  					return true;
+  			return false;
+  		};
+  }
+  
+  ///
+  /// End Of Header
+  ///
+  
+  // You need to determine the dynamic ember ID of the chat box.
+  // Do this during the RunJeopardy() when the element is found
+  var TB_Chat_ID = "-1";
+  
+  function RunJeopardy()
+  {
+  		var _emberTa = $(".chat-room .chat-interface > .textarea-contain > div").children("textarea").first();
+  		
+  		if(TB_Char_ID == "-1")
+  		{
+  			if(_emberTa) {
+  				TB_Chat_ID = _emberTa.attr("id");
+			}
+  		} else {
+  			if(_emberTa && (TB_Chat_ID != _emberTa.attr("id"))) {
+  				TB_Chat_ID = _emberTa.attr("id");
+			}
+  		}
+  }
+  
+  function SendChatMessage(Msg)
+  {
+	$("#channel").off("click").on("click", function() {
+		$("#" + TB_Chat_ID).focus();
+		setTimeout(function(parma1) {
+			$("#" + TB_Chat_ID).val(parma1);
+			setTimeout(function() {
+				$("#" + TB_Chat_ID).blur();
+				setTimeout(function() {
+					$("#" + TB_Chat_ID).focus();
+					setTimeout(function() {
+						var b = $.Event(
+							"keydown");
+						b.keyCode = 13;
+						$("#" + TB_Chat_ID).trigger(
+							b).focus();
+					}, 250);
+				}, 250);
+			}, 250);
+		}, 250, Msg);
+	});
+  }
+  
+  
+  ///
+  /// Sub Mode Only Start
+  ///
+  
+  function SubModeOnly()
+  {
+  	  	if($("ul.chat-lines").length > 0)
+  		{
+  			$("ul.chat-lines").find("li").each(function() {
+  				var subBadge = $(this).find("span.badges").find("div.subscriber");
+  				
+  				if(subBadge.size() != 0)
+  				{
+  					$(this).css("display", "block");
+  				}
+  			});
+  		} else {
+  			//console.log("Could not find chat.");
+  		}
+  }
+  
+  ///
+  /// sub Mode Only End
+  ///
+  
+  ///
+  /// DeSpammer Start
+  ///
+  
+  function DeSpam()
+  {
+  		//console.log("There Are: " + $("ul.chat-lines").find("li").first().attr("id"));
+  		
+  		if($("ul.chat-lines").length > 0)
+  		{
+  			$("ul.chat-lines").find("li").each(function() {
+  				//This is so we dont count a message more than once
+  				if( EmberIDs.indexOf($(this).attr("id")) == -1)
+  				{
+  					//Add Ember ID to array to known when to stop next time
+  					EmberIDs.push($(this).attr("id"));
+  					
+  					//Handle Message
+  					//console.log("IsBan = " + MessageHandler($(this)));
+  					
+  					if(!MessageHandler($(this)) ){
+  						$(this).css("display", "block");
+  						//console.log("Banned Message");
+  					} else {
+  						blockedMessages++;
+  						UpdateCounter("TCDBMCSPAM", blockedMessages);
+  					}
+  					
+  					//Empty Stored IDs - need to match how many twitch messages shows at a time
+  					if(EmberIDs.length > 1000)
+  						EmberIDs = [];
+  						
+  					//Only Clean up Messages when total Messages is over maxmessages or last clean time > cleaninterval
+  					if(Messages.length > maxMessage || ((new Date()).getTime() - LastClean) > cleanInterval)
+  						CleanCapturedMessages();
+  					
+  				} else {
+  					//console.log("End Of New Messages.");
+  					//return true;
+  				}
+  			});
+  		} else {
+  			//console.log("Could not find chat.");
+  		}
+  }
+  
+  function MessageHandler(target)
+  {
+  		var targetMsg = $(target).find("span.message").first().html();
+  		
+  		if( targetMsg )
+  		{
+  			targetMsg = targetMsg.toLowerCase();
+  		
+  			var foundMc = $.grep(Messages, function(e)
+  			{ 
+  				return (e.msg == targetMsg);
+  			});
+  		
+  			if(foundMc.length == 0)
+  			{
+  				Messages.push(new MessageCapture(targetMsg));
+  				//console.log("Creating MessageCapture");
+  				return false;
+  			} else {
+  				foundMc[0].increment();
+  				//console.log("Incremented MessageCapture");
+  			
+  				return foundMc[0].isBan();
+  			}	
+  		
+  			foundMc = null;
+		}
+  }
+  
+  function UpdateCounter(targetID, value)
+  {
+  		if( $("#" + targetID).length == 0)
+  		{
+  			$(".room-title")
+  				.first()
+  				.append("<span id='" + targetID + "' style='float:right;font-size:10px;'>Blocked: " + value + "</span>")
+  				.attr("style","margin: auto;text-align: center;");
+  		} else {
+  			$("#" + targetID).text( "Blocked: " + value);
+  		}
+  }
+  
+  function CleanCapturedMessages()
+  {
+  		LastClean = (new Date()).getTime();
+  		
+  		for (var i = Messages.length-1; i >= 0; i--) {
+			if(Messages[i].isExpired() || Messages[i].isNotSpam())
+				Messages.splice(i,1);
+		}
+  }
+  
+  ///
+  /// End DeSpammer
+  ///
+  
+  
+});
