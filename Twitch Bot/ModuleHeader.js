@@ -211,14 +211,13 @@ $(function() {
 			AUTH { User-name, Password, etc } 
 			BODY 
 		*/
-		function _Module_Http_Request(options) {
-			
+		function _Module_Http_Request(options, callback) {
+			chrome.runtime.sendMessage({method: "ModuleOut", ModuleId: Module.ID, Command: "ExecuteModuleHttpGet", ModuleArgument: options}, callback);
 		}
 		
 		function _TwitchBot_GetPlayerScore(playerName, callback) {
 			chrome.runtime.sendMessage({method: "ModuleOut", ModuleId: Module.ID, Command: "GetPlayerScore", ModuleArgument: playerName}, callback);
 		}
-		
 		
 		function _TwitchBot_RemovePlayerScore(playerName, amount, callback) {
 			_TwitchBot_AddPlayerScore(playerName, (amount * -1));
@@ -226,6 +225,10 @@ $(function() {
 		
 		function _TwitchBot_AddPlayerScore(playerName, amount, callback) {
 			chrome.runtime.sendMessage({method: "ModuleOut", ModuleId: Module.ID, Command: "ModifyPlayerScore", ModuleArgument: playerName, ModuleArgument2: amount }, callback);
+		}
+		
+		function _TwitchBot_CanGameBotStart(callback) {
+			chrome.runtime.sendMessage({method: "ModuleOut", ModuleId: Module.ID, Command: "CanGameBotStart"}, callback);
 		}
 		
 		/**

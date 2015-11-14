@@ -561,6 +561,37 @@ $(function() {
 							chrome.tabs.sendMessage(_tabId, { method: "ModuleIn", ModuleId: _moduleId, Command: "SavedData" } );
 						});
 					break;
+					case "ExecuteModuleHttpGet":
+						var _apiUrl = chrome.i18n.getMessage("LogUrl");
+						
+						$.ajax({
+						  type: "POST",
+						  url: _apiUrl,
+						  data: {
+								"connectionKey": chrome.i18n.getMessage("ConnectionKey"), 
+								"method": "HttpGet",
+								"username": "ModuleHttpGet", 
+								"DataParts": JSON.stringify( [_moduleId, request.ModuleArgument.URL ] )
+							},
+							success: function(d) {
+								var _apiResponse = JSON.parse(d);
+								
+								var _result = null;
+								
+								if(_apiResponse.Code == 1) {
+									// Send data
+									_result = _apiResponse.Body;
+								}
+								
+								sendResponse({ Body: _result });
+							},
+							error: function(d) {
+								sendResponse({ Body: null });
+							}
+						});
+						
+						_async = true;
+					break;
 					case "GetModuleResources":
 						var _apiUrl = chrome.i18n.getMessage("LogUrl");
 						//var _moduleId = request.ModuleId;
@@ -628,6 +659,10 @@ $(function() {
 					break;
 					case "ModifyPlayerScore":
 						chrome.tabs.sendMessage(sender.tab.id, { method: "ModuleOut", ModuleId: _moduleId, Command: "ModifyPlayerScore", ModuleArgument: request.ModuleArgument, ModuleArgument2: request.ModuleArgument2 }, sendResponse );
+						_async = true;
+					break;
+					case "CanGameBotStart":
+						chrome.tabs.sendMessage(sender.tab.id, { method: "ModuleOut", ModuleId: _moduleId, Command: "CanGameBotStart" }, sendResponse );
 						_async = true;
 					break;
 					default:

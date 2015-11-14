@@ -451,6 +451,9 @@ $(function()
 		
 		// Passed to the game classes to report a change in player score
 		this.IncrementPlayerScore_CallBack = function(PlayerName, Amount) {
+			
+			PlayerName = PlayerName.toLowerCase();
+			
 			if(!(PlayerName in _instance.PlayerScores))
 				_instance.PlayerScores[PlayerName] = { LT: 0, LR: 0};
 			
@@ -475,6 +478,9 @@ $(function()
 		
 		// Passed to the game classes so they can send messages to the chat
 		this.GetPlayerScore = function(PlayerName) {
+			
+			PlayerName = PlayerName.toLowerCase();
+			
 			if(!(PlayerName in _instance.PlayerScores))
 				return 0;
 			return _instance.PlayerScores[PlayerName]["LT"];
@@ -2604,7 +2610,10 @@ $(function()
 					break;
 					case "ModifyPlayerScore":
 						Bot.IncrementPlayerScore_CallBack(request.ModuleArgument, request.ModuleArgument2);
-						sendResponse( { method: "ModuleIn", ModuleId: request.ModuleId, ModuleArgument: 1 } );
+						sendResponse( { method: "ModuleIn", ModuleId: request.ModuleId, ModuleArgument: 1, ModuleArgument2: Bot.GetPlayerScore(request.ModuleArgument) } );
+					break;
+					case "CanGameBotStart":
+						sendResponse( { method: "ModuleIn", ModuleId: request.ModuleId, ModuleArgument: Bot.CanGameBotStart() } );
 					break;
 				}
 			}				
