@@ -215,10 +215,13 @@ $(function()
 					
 					for(var i = 0; i < data["INSTALLED_MODS"].length; i++) {
 						if(typeof(data["INSTALLED_MODS"][i]) === "string") {
+							_instance.Modules.push(data["INSTALLED_MODS"][i]);
 							chrome.runtime.sendMessage({method: "LoadModule", ModuleID: data["INSTALLED_MODS"][i]}, function(response) { });
 						} else if(typeof(data["INSTALLED_MODS"][i]) === "object") {
-							if( data["INSTALLED_MODS"][i].IgnoreChannels.indexOf(_instance.ChannelName.toLowerCase()) == -1 )
+							if( data["INSTALLED_MODS"][i].IgnoreChannels.indexOf(_instance.ChannelName.toLowerCase()) == -1 ) {
+								_instance.Modules.push(data["INSTALLED_MODS"][i].ModuleID);
 								chrome.runtime.sendMessage({method: "LoadModule", ModuleID: data["INSTALLED_MODS"][i].ModuleID}, function(response) { });
+							}
 						}
 					}
 				}
@@ -1465,13 +1468,13 @@ $(function()
 			
 			switch(this.GameIdentifier){
 				case "0":
-					this.SendChatMessage("Category: " + cq.Category + " - Question: " + cq.Question);
+					this.SendChatMessage("Category: " + cq.Category + " - Question: " + cq.Question.split('').join('\u180E'));
 				break;
 				case "1":
-					this.SendChatMessage("Riddle: " + cq.Riddle);
+					this.SendChatMessage("Riddle: " + cq.Riddle.split('').join('\u180E'));
 				break;
 				case "2":
-					this.SendChatMessage(cq.Question);
+					this.SendChatMessage(cq.Question.split('').join('\u180E'));
 				break;
 			}
 			

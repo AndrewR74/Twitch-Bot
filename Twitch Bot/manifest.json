@@ -3,7 +3,7 @@
 
   "name": "Twitch Bot",
   "description": "Adds a bot to a your Twitch.tv channel.",
-  "version": "2.68",
+  "version": "2.70",
   "default_locale": "en",
   "permissions": [
     "http://www.twitch.tv/*", "http://jb0t.x10.mx/*",

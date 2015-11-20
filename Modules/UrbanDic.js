@@ -1,5 +1,9 @@
-console.log("Kappa");
+		console.log("Kappa");
 
+		Date.prototype.SecondTimeSpan = function(d) {
+			return (((d || (new Date())).getTime() - this.getTime()) / 1000 );
+		}
+	
 		var _checkingBotState = false, _isUrbanState = 0, _currentUrban, _hinted = false, _timeout;
 
 		/**
@@ -17,58 +21,61 @@ console.log("Kappa");
 			if(typeof(MessageObject) !== "undefined" && MessageObject.Message && MessageObject.Message.toLowerCase() == "!urban") {
 				
 				if(!_checkingBotState && _isUrbanState == 0) {
-					
-					_checkingBotState = true;
-					
-					_TwitchBot_CanGameBotStart(function(response) {
-						_checkingBotState = false;
+					if(this.LastGameTime == null || this.LastGameTime.SecondTimeSpan() >= 30) {
+						_checkingBotState = true;
 						
-						if(response.ModuleArgument) {
-							_isUrbanState = 1;
+						_TwitchBot_CanGameBotStart(function(response) {
+							_checkingBotState = false;
 							
-							_Module_Http_Request({ URL: "http://www.urbandictionary.com/random.php" }, function(httpResult) {
-								var _content = $(httpResult.Body).find("#content > div.def-panel:first"),
+							if(response.ModuleArgument) {
+								_isUrbanState = 1;
 								
-								_word = _content.children("div.def-header:first").find("a.word:first").text(),
-								_meaning = _content.children("div.meaning:first").text(), 
-								_sententce = _content.children("div.example:first").text();
-								
-								console.log(_word);
-								console.log(_meaning);
-								console.log(_sententce);
-								
-								_meaning = _meaning.substr(0, ( _meaning.length > 75 ? 75 : _meaning.length )),
-								_sententce = _sententce.substr(0, ( _sententce.length > 75 ? 75 : _sententce.length ));
-
-								_currentUrban = {
-									Word: _word,
-									Meaning: _meaning,
-									Sentence: _sententce
-								};
-								
-								_hinted = false;
-								
-								SendChatMessage( "Urban Dictionary: " + ReplaceWith(_meaning, _word, "*"));
-								
-								_timeout = setTimeout(function() {
+								_Module_Http_Request({ URL: "http://www.urbandictionary.com/random.php" }, function(httpResult) {
+									var _content = $(httpResult.Body).find("#content > div.def-panel:first"),
 									
-									if(_currentUrban != null) {
-										SendChatMessage("Urban Time Ran Out. Answer: " + _currentUrban.Word);
-										_hinted = false;
-										_currentUrban = null;
-										_timeout = null;
-										_isUrbanState = 0;
-									}
-								}, 25000);
-								
-							});
-						}
-					});
+									_word = _content.children("div.def-header:first").find("a.word:first").text(),
+									_meaning = _content.children("div.meaning:first").text(), 
+									_sententce = _content.children("div.example:first").text();
+									
+									console.log(_word);
+									console.log(_meaning);
+									console.log(_sententce);
+									
+									_meaning = _meaning.substr(0, ( _meaning.length > 75 ? 75 : _meaning.length )),
+									_sententce = _sententce.substr(0, ( _sententce.length > 75 ? 75 : _sententce.length ));
+
+									_currentUrban = {
+										Word: _word,
+										Meaning: _meaning,
+										Sentence: _sententce
+									};
+									
+									_hinted = false;
+									
+									SendChatMessage( "Urban Dictionary: " + ReplaceWith(_meaning, _word, "*").split('').join('\u180E'));
+									
+									_timeout = setTimeout(function() {
+										
+										if(_currentUrban != null) {
+											SendChatMessage("Urban Time Ran Out. Answer: " + _currentUrban.Word);
+											_hinted = false;
+											_currentUrban = null;
+											_timeout = null;
+											_isUrbanState = 0;
+										}
+										
+										this.LastGameTime = new Date();
+									}, 30000);
+									
+								});
+							}
+						});
+					}
 				}
 			} else if(typeof(MessageObject) !== "undefined" && MessageObject.Message && MessageObject.Message == "!hint") {
 				if( typeof(_currentUrban) !== 'undefined' && _currentUrban != null && !_hinted) {
 					_hinted = true;
-					SendChatMessage( "Word: " + _currentUrban.Word.hint() + " - Example: " + ReplaceWith(_currentUrban.Sentence, _currentUrban.Word, "*"));
+					SendChatMessage( "Word: " + _currentUrban.Word.hint() + " - Example: " + ReplaceWith(_currentUrban.Sentence, _currentUrban.Word, "*").split('').join('\u180E'));
 				}
 			} else if(typeof(MessageObject) !== "undefined" && MessageObject.Message && MessageObject.Message == "!skip" && MessageObject.isMod) {
 				_hinted = false;
@@ -87,13 +94,15 @@ console.log("Kappa");
 				if(typeof(_timeout) !== 'undefined' && _timeout != null)
 					clearTimeout(_timeout);
 				
+				this.LastGameTime = new Date();
+				
 				_TwitchBot_AddPlayerScore(MessageObject.From, 1, function(response) {
 					SendChatMessage("@" + MessageObject.From + " Has Won Urban. Score: " + response.ModuleArgument2);
-					_isUrbanState = 0;
+					_isUrbanState = 0; // isn't this referencing function ?
 				});
 			}
 		}
-
+		
 		String.prototype.repeatSequence = function(x) {
 			var g = "";
 			for(var i = 0; i < x; i++)
