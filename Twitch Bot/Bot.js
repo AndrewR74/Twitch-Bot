@@ -2351,7 +2351,7 @@ $(function()
 			); */
 			
 			
-			$.get(chrome.extension.getURL("CIJ.js"),
+			$.get(chrome.extension.getURL("ChatInjection-Pro.js"),
 				function (data) {
 					var node = document.createElement("script");
 					data = data.replace("[CHAT_ID]", _instance.Chat_ID).replace("[EXTENSION_ID]", chrome.runtime.id);
