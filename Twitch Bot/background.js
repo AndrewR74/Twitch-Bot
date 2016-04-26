@@ -67,6 +67,7 @@ $(function() {
 			}
 			
 		} else if(_Sending) {
+			console.log("Waiting for message to be sent");
 			// 10 Second sending time out
 			if(_SendTimeOut != null && ((((new Date()).getTime()) - _SendTimeOut.getTime()) / 1000 ) > 10) {
 				if((_LogInAttemps++) == 0) {

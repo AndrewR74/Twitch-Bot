@@ -11,7 +11,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["http://*.twitch.tv/*"],
+      "matches": ["http://*.twitch.tv/*", "https://*.twitch.tv/*"],
       "css": ["TcdCSS.css"],
       "js": ["TcdQuery.min.js", "Bot.js", "Vector2D.js"]
     },

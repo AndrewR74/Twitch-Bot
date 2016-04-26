@@ -24,7 +24,7 @@ $(function()
 	Bot.init();
 
 	// what runs the bot
-	var RunInterval = setInterval(function() { Bot.Load(); }, 1000);
+	var RunInterval = setInterval(function() { Bot.Load(); }, 250);
 	
 	function TwitchBot()
 	{
@@ -2407,6 +2407,7 @@ $(function()
 		// Send a message to the chat
 		this.SendChatMessage = function(Msg, Sender)
 		{
+			console.log("Message Received");
 			/*$("#jQueue").append(
 				$("<div style='display: none'></div>").attr("id", "JMsg" + (this.ID_Tracker++)).attr("data-msg", Msg)
 			);*/
@@ -2442,11 +2443,11 @@ $(function()
 		this.Monitor_Busy = false;
 		
 		this.OnQueueChatMessage = function(request, sender, sendResponse) {
-			this.LookOutMsg = request.Msg;
-			
+			_instance.LookOutMsg = request.Msg;
+			console.log("Message Dispatched");
 			$("#jQueue").append(
 				$("<div style='display: none'></div>")
-				.attr("id", "JMsg" + (this.ID_Tracker++))
+				.attr("id", "JMsg" + (_instance.ID_Tracker++))
 				.attr("data-msg", request.Msg)
 				.attr("data-cmd", "message")
 			);
@@ -2552,6 +2553,9 @@ $(function()
 								ContainsLinks: ($(this).find("span.message a").length > 0) // Faster way of looking for links in the chat
 							 };
 							
+							if(MessageObject && MessageObject.Message)
+								MessageObject.Message = MessageObject.Message.trim();
+							
 							if(_instance.LookOutMsg != "" && _instance.LookOutMsg == MessageObject.Message){
 								chrome.runtime.sendMessage({method: "MessageSent"}, function(response) {
 								  //console.log("Response Code: " + response.responseCode);
@@ -2562,6 +2566,7 @@ $(function()
 							
 							// Verify it is a real message and not fucking null shit
 							if(MessageObject && MessageObject.Message && MessageObject.From) {
+								console.log(MessageObject.Message);
 								result.push(MessageObject);
 								
 								// Increment the counter
